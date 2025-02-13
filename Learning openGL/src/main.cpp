@@ -8,6 +8,7 @@ void processInput(GLFWwindow* window);
 
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
+const unsigned int LOG_SIZE = 512;
 
 const char* vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
@@ -64,11 +65,11 @@ int main() {
 
 	// Checking if shader compilation went fine
 	int success;
-	char infoLog[512];
+	char infoLog[LOG_SIZE];
 
 	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
 	if (!success) {
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+		glGetShaderInfoLog(vertexShader, LOG_SIZE, NULL, infoLog);
 		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
 	}
 
@@ -80,11 +81,11 @@ int main() {
 	// Checking if shader compilation went fine
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
 	if (!success) {
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+		glGetShaderInfoLog(fragmentShader, LOG_SIZE, NULL, infoLog);
 		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
 	}
 
-	// Linking created shaders into one program (aka pipline ?)
+	// Linking the created shaders into one program (aka pipline ?)
 	unsigned int shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram, vertexShader);
 	glAttachShader(shaderProgram, fragmentShader);
@@ -93,7 +94,7 @@ int main() {
 	// Checking if linking shaders into program went fine
 	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
 	if (!success) {
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+		glGetProgramInfoLog(shaderProgram, LOG_SIZE, NULL, infoLog);
 		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
 	}
 
@@ -102,11 +103,11 @@ int main() {
 	glDeleteShader(fragmentShader);
 
 	// DRAWING AN OBJECT
-	// Triangle vertices in Screen Normalized Coordinates (each axis x, y and z in the range of (-1, 1))
+	// Triangle vertices in Screen Normalized Coordinates (each axis, x, y and z, lies in the range (-1, 1))
 	float vertices[] = {
 		 0.5f,  0.5f, 0.0f,
 		-0.5f,  0.5f, 0.0f,
-		 0.0f, -0.5f, 0.0f
+		 0.0f, -0.5f, 0.0f,
 	};
 
 	// Allocating memory on GPU
@@ -116,6 +117,7 @@ int main() {
 	
 	// Bind the Vertex Array Object first and set vertex buffer(s), and then convert vertex atribute(s)
 	glBindVertexArray(vertexArrayObject);
+
 
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -147,7 +149,7 @@ int main() {
 		// Activating the program object to render it
 		glUseProgram(shaderProgram);
 		glBindVertexArray(vertexArrayObject); // seeing as we only have a single VAO there's no need to bind it
-											  // every time, but we'll do it to keep things a bit moreorganized
+											  // every time, but we'll do it to keep things a bit more organized
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		//glBindVertexArray(0); // no need to unbind it every time
 
