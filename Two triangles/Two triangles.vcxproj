@@ -24,7 +24,7 @@
     <ProjectGuid>{9f811ab4-151d-4982-a5cd-d533aaac9fc6}</ProjectGuid>
     <RootNamespace>Twotriangles</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>Triangular flower</ProjectName>
+    <ProjectName>Triangular flower1</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
